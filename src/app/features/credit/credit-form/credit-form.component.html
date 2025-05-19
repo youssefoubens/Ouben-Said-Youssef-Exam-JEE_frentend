@@ -1,0 +1,52 @@
+<form [formGroup]="creditForm" (ngSubmit)="onSubmit()">
+    <h2>Create New Credit</h2>
+  
+    <mat-form-field>
+      <mat-label>Amount</mat-label>
+      <input matInput type="number" formControlName="amount">
+      <mat-error *ngIf="creditForm.get('amount')?.hasError('required')">
+        Amount is required
+      </mat-error>
+    </mat-form-field>
+  
+    <mat-form-field>
+      <mat-label>Duration (months)</mat-label>
+      <input matInput type="number" formControlName="duration">
+    </mat-form-field>
+  
+    <mat-form-field>
+      <mat-label>Credit Type</mat-label>
+      <mat-select formControlName="type">
+        <mat-option *ngFor="let type of creditTypes" [value]="type">
+          {{type}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+    <div *ngIf="creditForm.get('type')?.value === 'PERSONAL'">
+      <mat-form-field>
+        <mat-label>Motive</mat-label>
+        <input matInput formControlName="motive">
+      </mat-form-field>
+    </div>
+  
+    <div *ngIf="creditForm.get('type')?.value === 'MORTGAGE'">
+      <mat-form-field>
+        <mat-label>Property Type</mat-label>
+        <mat-select formControlName="propertyType">
+          <mat-option value="APARTMENT">Apartment</mat-option>
+          <mat-option value="HOUSE">House</mat-option>
+          <mat-option value="COMMERCIAL">Commercial</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  
+    <div *ngIf="creditForm.get('type')?.value === 'PROFESSIONAL'">
+      <mat-form-field>
+        <mat-label>Company Name</mat-label>
+        <input matInput formControlName="companyName">
+      </mat-form-field>
+    </div>
+  
+    <button mat-raised-button color="primary" type="submit">Submit</button>
+  </form>

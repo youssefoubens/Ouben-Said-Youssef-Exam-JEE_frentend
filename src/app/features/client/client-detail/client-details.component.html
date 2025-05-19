@@ -1,0 +1,35 @@
+<mat-card *ngIf="client$ | async as client">
+    <mat-card-header>
+      <mat-card-title>{{client.name}}</mat-card-title>
+      <mat-card-subtitle>Client #{{client.id}}</mat-card-subtitle>
+    </mat-card-header>
+  
+    <mat-divider></mat-divider>
+  
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item>
+          <span matListItemTitle>Email</span>
+          {{client.email}}
+        </mat-list-item>
+        <mat-list-item>
+          <span matListItemTitle>Registered On</span>
+          {{client.createdAt | date:'fullDate'}}
+        </mat-list-item>
+      </mat-list>
+  
+      <h3>Credits</h3>
+      <mat-nav-list *ngIf="client.credits && client.credits.length > 0">
+        <a 
+          mat-list-item 
+          *ngFor="let credit of client.credits"
+          [routerLink]="['/credits', credit.id]"
+        >
+          {{credit.type}} - {{credit.amount | currency}}
+        </a>
+      </mat-nav-list>
+      <p *ngIf="!client.credits || client.credits.length === 0">
+        No credits found for this client
+      </p>
+    </mat-card-content>
+  </mat-card>
