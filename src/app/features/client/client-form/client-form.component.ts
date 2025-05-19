@@ -15,8 +15,8 @@ import { CommonModule } from '@angular/common';
     MatInputModule,
     MatButtonModule
   ],
-  templateUrl: './client-form.component.html',
-  styleUrls: ['./client-form.component.css']
+  templateUrl: './client-form.component.html'
+  
 })
 export class ClientFormComponent {
   clientForm;

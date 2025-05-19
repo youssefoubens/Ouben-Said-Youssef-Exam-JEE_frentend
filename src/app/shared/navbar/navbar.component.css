@@ -1,0 +1,55 @@
+/* Toolbar styling */
+mat-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 0 2rem;
+}
+
+/* Brand logo/link */
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.2rem;
+}
+
+/* Spacer for flex layout */
+.spacer {
+    flex: 1 1 auto;
+}
+
+/* Navigation links */
+.nav-links {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Active link styling */
+.active-link {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+/* Mobile menu button (hidden on desktop) */
+.mobile-menu {
+    display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+
+    .mobile-menu {
+        display: block;
+    }
+
+    mat-toolbar {
+        padding: 0 1rem;
+    }
+}

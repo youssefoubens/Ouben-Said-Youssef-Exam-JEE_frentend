@@ -1,31 +1,47 @@
-<form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
-  <h2>Create New Client</h2>
+<div class="container">
+  <h2>Client List</h2>
+  <mat-table [dataSource]="clients" class="mat-elevation-z8">
 
-  <mat-form-field>
-    <mat-label>Full Name</mat-label>
-    <input matInput formControlName="name">
-    <mat-error *ngIf="clientForm.get('name')?.hasError('required')">
-      Name is required
-    </mat-error>
-  </mat-form-field>
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+      <mat-cell *matCellDef="let client">{{ client.id }}</mat-cell>
+    </ng-container>
 
-  <mat-form-field>
-    <mat-label>Email</mat-label>
-    <input matInput type="email" formControlName="email">
-    <mat-error *ngIf="clientForm.get('email')?.hasError('required')">
-      Email is required
-    </mat-error>
-    <mat-error *ngIf="clientForm.get('email')?.hasError('email')">
-      Please enter a valid email
-    </mat-error>
-  </mat-form-field>
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+      <mat-cell *matCellDef="let client">{{ client.name }}</mat-cell>
+    </ng-container>
 
-  <button 
-    mat-raised-button 
-    color="primary" 
-    type="submit"
-    [disabled]="clientForm.invalid"
-  >
-    Create Client
-  </button>
-</form>
+    <!-- Action Column -->
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+      <mat-cell *matCellDef="let client">
+        <button mat-button color="primary" (click)="viewClientDetails(client)">
+          View Credits
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="['id', 'name', 'action']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['id', 'name', 'action']"></mat-row>
+  </mat-table>
+
+  <!-- Selected Client Credit Details -->
+  <div *ngIf="selectedClient" class="credit-details">
+    <h3>Credits for {{ selectedClient.name }}</h3>
+    <button mat-button color="accent" (click)="clearSelection()">Close</button>
+
+    <mat-list *ngIf="credits.length > 0; else noCredits">
+      <mat-list-item *ngFor="let credit of credits">
+        Amount: {{ credit.amount }} | Interest: {{ credit.interestRate }}% |
+        From: {{ credit.startDate }} To: {{ credit.endDate }}
+      </mat-list-item>
+    </mat-list>
+
+    <ng-template #noCredits>
+      <p>No credits available for this client.</p>
+    </ng-template>
+  </div>
+</div>

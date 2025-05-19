@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
@@ -14,10 +14,11 @@ import { map, switchMap } from 'rxjs';
     CommonModule,
     MatCardModule,
     MatListModule,
-    MatDividerModule
+    MatDividerModule,
+    RouterModule,
   ],
-  templateUrl: './client-details.component.html',
-  styleUrls: ['./client-details.component.css']
+  templateUrl: './client-details.component.html'
+  
 })
 export class ClientDetailsComponent {
   private route = inject(ActivatedRoute);

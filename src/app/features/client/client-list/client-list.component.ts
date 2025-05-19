@@ -1,45 +1,52 @@
-import { Component } from '@angular/core';
-import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
+import { Component, OnInit } from '@angular/core';
 import { ClientService } from '../../../services/client.service';
-import { Router } from '@angular/router';
+import { Client } from '../../../models/client.model';
+import { CreditSummary } from '../../../models/credit-summary.model';
+
+// Import Angular Material modules
+import { MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';  // <-- Add this
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-client-form',
-  standalone: true,
+  selector: 'app-client-list',
+  templateUrl: './client-list.component.html',
+  styleUrls: ['./client-list.component.css'],
+  standalone: true,  // add if you are using standalone components
   imports: [
     CommonModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatButtonModule
-  ],
-  templateUrl: './client-form.component.html',
-  styleUrls: ['./client-form.component.css']
+    MatTableModule,
+    MatButtonModule,
+    MatListModule  // <-- Add this here
+  ]
 })
-export class ClientFormComponent {
-  clientForm;
+export class ClientListComponent implements OnInit {
+  clients: Client[] = [];
+  selectedClient: Client | null = null;
+  credits: CreditSummary[] = [];
 
-  constructor(
-    private fb: FormBuilder,
-    private clientService: ClientService,
-    private router: Router
-  ) {
-    this.clientForm = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]]
+  constructor(private clientService: ClientService) {}
+
+  ngOnInit(): void {
+    this.loadClients();
+  }
+
+  loadClients(): void {
+    this.clientService.getAllClients().subscribe((data) => {
+      this.clients = data;
     });
   }
 
-  onSubmit() {
-    if (this.clientForm.valid) {
-      const clientData = {
-        name: this.clientForm.value.name || '',
-        email: this.clientForm.value.email || ''
-      };
-      this.clientService.createClient(clientData)
-        .subscribe(() => this.router.navigate(['/clients']));
-    }
+  viewClientDetails(client: Client): void {
+    this.selectedClient = client;
+    this.clientService.getClientCredits(client.id).subscribe((data) => {
+      this.credits = data;
+    });
+  }
+
+  clearSelection(): void {
+    this.selectedClient = null;
+    this.credits = [];
   }
 }
